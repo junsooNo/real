@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.CoinDAO">
+	<select id="coin_list" resultType="com.level.toon.dto.CoinDTO">
+		select * from lt_coin
+	</select>
+	<select id="coin_find" parameterType="int" resultType="com.level.toon.dto.CoinDTO">
+		select * from lt_coin where coin_num=#{coin_num}
+	</select>
+</mapper>

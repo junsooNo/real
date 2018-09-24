@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.CommentDAO">
+	<insert id="comment_write" parameterType="com.level.toon.dto.CommentDTO">
+		insert into lt_comment values(#{toon_num}, #{ep_num}, #{member_num}, lt_comment_seq.nextval, #{comment_content}, default, default)
+	</insert>
+	<select id="best_comment" parameterType="com.level.toon.dto.EpisodeDTO" resultType="com.level.toon.dto.ObjectDTO">
+		<![CDATA[ 
+		select * from(select A.*, rownum rnum from(select * from lt_comment c join lt_member m on c.member_num = m.member_num where toon_num = #{toon_num} and ep_num = #{ep_num} and rec_count >= 1 order by rec_count desc)A) where rnum >= 1 and rnum <= 10
+		]]> 
+	</select>
+	<select id="comment_list" parameterType="com.level.toon.dto.EpisodeDTO" resultType="com.level.toon.dto.ObjectDTO">
+		select * from lt_comment c join lt_member m on c.member_num = m.member_num where toon_num = #{toon_num} and ep_num = #{ep_num}
+	</select>
+	<select id="comment_list2" parameterType="com.level.toon.dto.CommentDTO" resultType="com.level.toon.dto.ObjectDTO">
+		<![CDATA[ 
+			select * from(select A.*, rownum rnum from(select * from lt_comment c join lt_member m on c.member_num = m.member_num where toon_num = #{toon_num} and ep_num = #{ep_num} order by c.comment_date desc)A) where rnum >= #{start_num} and rnum <= #{end_num}
+		]]> 
+	</select>
+	<select id="comment_count" parameterType="com.level.toon.dto.EpisodeDTO" resultType="int">
+		select count(*) from lt_comment c join lt_member m on c.member_num = m.member_num where toon_num = #{toon_num} and ep_num = #{ep_num}
+	</select>
+	<select id="comment_info" parameterType="int" resultType="com.level.toon.dto.EpisodeDTO">
+		select ep_num, toon_num from lt_comment where comment_num = #{comment_num}
+	</select>	
+	<delete id="delete_comment" parameterType="int">
+		delete from lt_comment where comment_num = #{comment_num}
+	</delete>
+	<insert id="insert_rec_comment" parameterType="com.level.toon.dto.CommentRecDTO">
+		insert into lt_comment_rec values(#{member_num}, #{comment_num}, default)
+	</insert>
+	<delete id="delete_rec_comment" parameterType="com.level.toon.dto.CommentRecDTO">
+		delete from lt_comment_rec where member_num = #{member_num} and comment_num = #{comment_num}
+	</delete>
+	<select id="select_rec_count" parameterType="com.level.toon.dto.CommentRecDTO" resultType="int">
+		select count(*) from lt_comment_rec where comment_num = #{comment_num}
+	</select>
+	<update id="update_rec_count" parameterType="map">
+		update lt_comment set rec_count = #{rec_count} where comment_num = #{comment_num}
+	</update>
+	<select id="check_rec_status" parameterType="int" resultType="int">
+		select count(*) from lt_comment_rec where member_num = #{param1} and comment_num = #{param2}
+	</select>
+</mapper>

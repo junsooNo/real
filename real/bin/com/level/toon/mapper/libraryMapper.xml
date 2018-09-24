@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.LibraryDAO">
+	<insert id="add_library" parameterType="com.level.toon.dto.LibraryDTO">
+		insert into lt_library values(#{member_num}, #{toon_num}, #{ep_num}, default)
+	</insert>
+	<select id="library_count" parameterType="com.level.toon.dto.LibraryDTO" resultType="int">
+		select count(*) from lt_library where member_num=#{member_num} and toon_num=#{toon_num}
+	</select>
+	<update id="update_library" parameterType="com.level.toon.dto.LibraryDTO">
+		update lt_library set watch_date = default, ep_num=#{ep_num} where member_num = #{member_num} and toon_num = #{toon_num}
+	</update>
+	<delete id="delete_library" parameterType="com.level.toon.dto.LibraryDTO">
+	 	delete from lt_library where toon_num = #{toon_num}
+	</delete>
+	<select id="library_info" parameterType="com.level.toon.dto.LibraryDTO" resultType="com.level.toon.dto.LibraryDTO">
+		select * from lt_library where member_num=#{member_num} and toon_num=#{toon_num}
+	</select>
+	<select id="library_list" parameterType="int" resultType="com.level.toon.dto.LibraryDTO">
+		select * from lt_toon t join lt_library l on t.toon_num=l.toon_num where l.member_num=#{member_num}
+	</select>
+</mapper>

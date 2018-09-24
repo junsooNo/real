@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.EpisodeDAO">
+	<insert id="episode_upload_ok" parameterType="com.level.toon.dto.EpisodeDTO">
+		insert into lt_episode values(#{toon_num}, #{ep_num}, #{ep_title}, #{ep_main_image}, #{ep_toon_image}, default, default, default, #{free}, #{free_date}, #{view_coin})
+	</insert>
+	<select id="episode_list" parameterType="int" resultType="com.level.toon.dto.EpisodeDTO">
+		select * from lt_episode where toon_num = #{toon_num} order by ep_num asc
+	</select>
+	<select id="episode_info" parameterType="com.level.toon.dto.EpisodeDTO" resultType="com.level.toon.dto.ObjectDTO">
+		select * from lt_toon t join lt_episode l on t.toon_num = l.toon_num where l.toon_num = #{toon_num} and l.ep_num = #{ep_num}
+	</select>
+	<select id="episode_nav1" parameterType="map" resultType="com.level.toon.dto.EpisodeDTO">
+		select * from lt_episode where toon_num=#{toon_num} and ep_num ${inequality} #{ep_num}
+	</select>
+	<select id="episode_nav2" parameterType="map" resultType="com.level.toon.dto.EpisodeDTO">
+		select * from lt_episode where toon_num=#{toon_num} and ep_num ${inequality} #{ep_num}
+	</select>
+	<update id="update_star_rating" parameterType="com.level.toon.dto.StarScoreDTO">
+		update lt_episode set ep_star_rating = (select avg(star_score) from lt_star_score where toon_num=#{toon_num} and ep_num=#{ep_num}) where toon_num=#{toon_num} and ep_num=#{ep_num}
+	</update>	
+	<select id="episode_count" parameterType="com.level.toon.dto.EpisodeDTO" resultType="int">
+		select count(*) from lt_episode where toon_num=#{toon_num} and ep_num=#{ep_num}
+	</select>
+	<select id="total_ep_count" parameterType="int" resultType="int">
+		select count(*) from lt_episode where toon_num=#{toon_num}
+	</select>
+</mapper>

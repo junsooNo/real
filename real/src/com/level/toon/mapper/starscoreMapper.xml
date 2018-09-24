@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.StarScoreDAO">
+	<insert id="reg_star_score" parameterType="com.level.toon.dto.StarScoreDTO">
+		insert into lt_star_score values(#{toon_num}, #{ep_num}, #{member_num}, #{star_score})
+	</insert>
+	<select id="ck_star_score" parameterType="com.level.toon.dto.StarScoreDTO" resultType="int">
+		select count(*) from lt_star_score where toon_num = #{toon_num} and ep_num = #{ep_num} and member_num = #{member_num}
+	</select>
+	<select id="find_star_score" parameterType="com.level.toon.dto.StarScoreDTO" resultType="int">
+		select star_score from lt_star_score where toon_num = #{toon_num} and ep_num = #{ep_num} and member_num = #{member_num}
+	</select>
+</mapper>

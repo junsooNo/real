@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.ZzimDAO">
+	<insert id="add_zzim" parameterType="com.level.toon.dto.ZzimDTO">
+		insert into lt_zzim values(#{toon_num}, #{member_num}, default)
+	</insert>
+	<select id="ck_zzim" parameterType="com.level.toon.dto.ZzimDTO" resultType="int">
+		select count(*) from lt_zzim where toon_num = #{toon_num} and member_num = #{member_num}
+	</select>
+	<delete id="remove_zzim" parameterType="com.level.toon.dto.ZzimDTO">
+		delete from lt_zzim where toon_num = #{toon_num} and member_num = #{member_num}
+	</delete>
+</mapper>

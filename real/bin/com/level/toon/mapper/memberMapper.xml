@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.MemberDAO">
+	<select id="overlap_id" parameterType="String" resultType="int">
+		select count(*) from lt_member where email=#{email}
+	</select>
+	<insert id="join_ok" parameterType="com.level.toon.dto.MemberDTO">
+		insert into lt_member values(lt_member_seq.nextval,#{email},#{password},default,default,default)
+	</insert>
+	<select id="login_ok" parameterType="com.level.toon.dto.MemberDTO" resultType="int">
+		select count(*) from lt_member where email=#{email} and password=#{password}
+	</select>
+	<select id="find_member_num" parameterType="com.level.toon.dto.MemberDTO" resultType="int">
+		select member_num from lt_member where email=#{email} and password=#{password}
+	</select>
+	<update id="coin_update" parameterType="map">
+		update lt_member set coin=coin+#{coin} where member_num=#{member_num}
+	</update>
+	<select id="member_info" parameterType="String" resultType="com.level.toon.dto.MemberDTO">
+		select * from lt_member where email=#{email}
+	</select>
+	<update id="coin_subtract" parameterType="int">
+		update lt_member set coin=coin-#{param1} where member_num=#{param2}
+	</update>
+	<update id="lotto_update" parameterType="map">
+		update lt_member set lotto_date=#{today} where member_num=#{member_num}
+	</update>
+	<select id="lotto_date" parameterType="int" resultType="String">
+		select lotto_date from lt_member where member_num=#{member_num}
+	</select>
+</mapper>

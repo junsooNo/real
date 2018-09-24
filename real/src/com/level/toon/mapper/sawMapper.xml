@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.SawDAO">
+	<insert id="saw" parameterType="com.level.toon.dto.SawDTO">
+		insert into lt_saw values(lt_saw_seq.nextval,#{member_num},#{toon_num},#{ep_num})
+	</insert>
+	<select id="saw_count" parameterType="com.level.toon.dto.SawDTO" resultType="int">
+		select count(*) from lt_saw where member_num=#{member_num} and toon_num=#{toon_num} and ep_num=#{ep_num}
+	</select>
+</mapper>

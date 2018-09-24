@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.ToonDAO">
+	<insert id="toon_upload_ok">
+		insert into lt_toon values(lt_toon_seq.nextval,#{main_image},#{main_image2},#{cate_num},#{toon_title},#{toon_writer},#{toon_painter},#{upload_day},#{upload_type},#{toon_info},default)
+	</insert>
+	<select id="toon_list" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num=c.cate_num order by t.toon_num desc
+	</select>
+	<select id="toon_find" parameterType="String" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon where toon_title like #{toon_title} or toon_writer like #{toon_writer} or toon_painter like #{toon_painter}
+	</select>
+	<select id="today_toon_list" parameterType="String" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num=c.cate_num where upload_day=#{param1} order by toon_num desc
+	</select>
+	<select id="day_toon_list" parameterType="String" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num=c.cate_num where upload_day=#{param1} order by toon_num desc
+	</select>	
+	<select id="toon_info" parameterType="int" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num = c.cate_num where toon_num = #{toon_num}
+	</select>
+	<select id="recent_list" resultType="com.level.toon.dto.ObjectDTO">
+		<![CDATA[ 
+			select * from(select A.*, rownum rnum from(select * from lt_toon t join lt_category c on t.cate_num = c.cate_num join lt_episode e on t.toon_num = e.toon_num order by e.ep_upload_date desc)A) where rnum >= 1 and rnum <= 10
+		]]> 
+	</select>
+	<select id="monthly_list" resultType="com.level.toon.dto.ObjectDTO">
+		<![CDATA[ 
+			select * from(select A.*, rownum rnum from(select * from lt_toon t join lt_category c on t.cate_num = c.cate_num where t.upload_type = '월간' order by t.reg_date desc)A) where rnum >= 1 and rnum <= 10
+		]]> 
+	</select>
+	<select id="new_list" resultType="com.level.toon.dto.ObjectDTO">
+		<![CDATA[ 
+			select * from(select A.*, rownum rnum from(select * from lt_toon t join lt_category c on t.cate_num = c.cate_num where t.upload_type = '주간' order by t.reg_date desc)A) where rnum >= 1 and rnum <= 10
+		]]> 
+	</select>
+	<select id="monthly_toon_list" parameterType="String" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num = c.cate_num where t.upload_type=#{uploadType} order by t.toon_num desc
+	</select>
+	<select id="all_rank_list" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num=c.cate_num join lt_star_score s on t.toon_num=s.toon_num order by s.star_score desc
+	</select>
+	<select id="cate_rank_list" parameterType="int" resultType="com.level.toon.dto.ToonDTO">
+		select * from lt_toon t join lt_category c on t.cate_num=c.cate_num join lt_star_score s on t.toon_num=s.toon_num where t.cate_num=#{cate_num} order by s.star_score desc
+	</select>
+</mapper>

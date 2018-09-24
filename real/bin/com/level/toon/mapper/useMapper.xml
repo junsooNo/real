@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.level.toon.dao.UseDAO">
+	<select id="use_count" parameterType="com.level.toon.dto.UseDTO" resultType="int">
+		select count(*) from lt_use where member_num=#{member_num} and toon_num=#{toon_num} and ep_num=#{ep_num}
+	</select>
+	<insert id="add_use" parameterType="com.level.toon.dto.UseDTO">
+		insert into lt_use values(#{member_num},#{toon_num},#{ep_num},default,default,default)
+	</insert>
+</mapper>
